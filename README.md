@@ -1,61 +1,147 @@
-# **🚀 Hackathon DAM/DAW: De Cero a Producción en 12h**
+# 📝 Private Note Manager
 
-Este documento es vuestra hoja de ruta. Tenéis 12 horas para construir una aplicación web funcional. Recordad: la próxima semana, otros compañeros intentarán encontrar fallos de seguridad en vuestro código. **¡Construid con cuidado\!**
-
-## **1\. Opciones de Proyectos (Elegid uno)**
-
-Estas ideas están diseñadas para ser completadas en el tiempo previsto usando un stack sencillo (HTML/JS/Node o Python/Flask o PHP).
-
-| Proyecto | Descripción Core |
-| :---- | :---- |
-| **Gestor de Notas Privadas** | Un usuario se registra, inicia sesión y escribe notas que solo él puede ver. |
-| **Foro de Mensajes** | Un usuario se registra, inicia sesión y puede publicar mensajes en un muro público donde cualquiera puede verlos. |
-| **Mini-Tienda** | Un usuario se registra, inicia sesión y puede visualizar, comprar y vender productos. |
-| **Sistema de Subida de CVs** | Un usuario se registra, inicia sesión y puede subir un archivo .pdf con su currículum que se almacenará en el servidor. |
-
-Tenéis los requisitos detallados en el archivo [requisitos.md](./requisitos.md).
+Aplicación web de gestión de notas privadas desarrollada en un hackathon de 12 horas. Cada usuario solo puede ver y gestionar sus propias notas.
 
 ---
 
-**2\. Requisitos de Despliegue (Mínimos)**
+## 🧱 Stack tecnológico
 
-Para que vuestra app sea evaluable, debe cumplir esta estructura básica:
-
-### **A. Estructura de Datos**
-
-* **Base de Datos:** Podéis usar SQLite o JSON (un archivo local, lo más rápido).  
-* **Usuarios:** Debe haber al menos una tabla de usuarios con contraseñas (¡pensad si las guardáis en texto plano o con hash\!).
-
-### **B. Infraestructura**
-
-Debéis desplegar vuestra aplicación en un contenedor Docker. También podéis elegir desplegarla en un PaaS como **Railway.app** o **Render.com** (conectando vuestro repo de GitHub).
-
---- 
-
-**3\. Ejemplo de Arquitectura Sugerida**
-
-Si no sabéis por dónde empezar, usad este esquema estándar:
-
-**Frontend:** HTML5 \+ CSS (Framework como Pico.css o Bootstrap para no perder tiempo en diseño).
-
-**Backend:** Express.js (Node) o Flask (Python).
-
-**Persistencia:** Archivo JSON o SQLite.
+| Capa | Tecnología |
+|------|-----------|
+| Frontend | HTML5 + CSS + Vanilla JS |
+| Backend | Node.js + Express.js |
+| Base de datos | JSON file (`backend/data/db.json`) |
+| Contenedores | Docker + Docker Compose |
 
 ---
 
-**4\. Checklist de "Supervivencia"**
+## 📁 Estructura del proyecto
 
-Antes de entregar, aseguraos de que vuestra app no cae ante lo más básico:
-
-* \[ \] **Validación:** ¿Qué pasa si envío un formulario vacío?  
-* \[ \] **Autenticación:** ¿Puedo acceder a una ruta simplemente escribiendo la URL sin loguearme?  
-* \[ \] **Reducción:** ¿Mando únicamente la información necesaria o toda la disponible?  
-* \[ \] **Control de Errores:** Si algo falla, ¿la app muestra el error feo del servidor con rutas de carpetas o un mensaje amigable?
+```
+mi-proyecto/
+├── docker-compose.yml
+├── README.md
+├── backend/
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── app.js
+│   ├── routes/
+│   │   ├── auth.js        ← registro y login
+│   │   └── notes.js       ← CRUD de notas
+│   ├── middleware/
+│   │   └── auth.js        ← protección de rutas (JWT pendiente)
+│   ├── data/
+│   │   └── db.json        ← usuarios y notas
+│   └── utils/
+│       └── db.js          ← helpers de lectura/escritura
+└── frontend/
+    ├── index.html         ← login y registro
+    ├── notes.html         ← dashboard de notas
+    ├── style.css
+    └── script.js
+```
 
 ---
 
-**5\. Herramientas Útiles**
+## 🚀 Cómo arrancar el proyecto
 
-* **Para el desarrollo:** Visual Studio Code \+ Extensiones de lenguaje.  
-* **Para bases de datos:** [DBeaver](https://dbeaver.io/) para visualizar vuestras tablas fácilmente.
+### Con Docker (recomendado)
+
+```bash
+docker-compose up --build
+```
+
+- Frontend: http://localhost:8080
+- Backend: http://localhost:3000
+
+### Sin Docker (Node.js portable)
+
+**Backend:**
+```bash
+cd mi-proyecto/backend
+npm install
+node app.js
+```
+
+**Frontend:**  
+Copia la carpeta `frontend/` en `C:\xampp\htdocs\` y ábrelo en:
+```
+http://localhost:8080/mi-proyecto/frontend/index.html
+```
+
+> ⚠️ Sin Docker necesitas tener XAMPP corriendo y añadir CORS en `app.js` apuntando al puerto correcto.
+
+---
+
+## 🔌 API Endpoints
+
+### Auth
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| POST | `/api/auth/register` | Registro de usuario |
+| POST | `/api/auth/login` | Login de usuario |
+
+#### Registro — body:
+```json
+{
+  "email": "user@example.com",
+  "password": "123456",
+  "confirmPassword": "123456"
+}
+```
+
+#### Login — body:
+```json
+{
+  "email": "user@example.com",
+  "password": "123456"
+}
+```
+
+---
+
+### Notas
+
+> Todas las rutas requieren el header `x-user-id: <userId>`
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/notes` | Listar notas propias |
+| POST | `/api/notes` | Crear nota |
+| PUT | `/api/notes/:id` | Editar nota propia |
+| DELETE | `/api/notes/:id` | Eliminar nota propia |
+
+#### Crear/editar nota — body:
+```json
+{
+  "title": "Mi nota",
+  "content": "Contenido de la nota"
+}
+```
+---
+
+## 📦 Dependencias
+
+```json
+{
+  "bcryptjs": "^2.4.3",
+  "cors": "^2.8.5",
+  "express": "^4.18.2",
+  "express-rate-limit": "^7.1.5",
+  "helmet": "^7.1.0",
+  "sanitize-html": "^2.11.0",
+  "uuid": "^9.0.0"
+}
+```
+
+---
+
+## 🛑 Checklist de supervivencia
+
+- [x] Validación en backend — datos vacíos o inválidos son rechazados
+- [x] Rutas protegidas — no accesibles sin `x-user-id`
+- [x] Autorización — cada usuario solo accede a sus recursos
+- [x] Sin campos sensibles en respuestas — el hash de la contraseña nunca se devuelve
+- [x] Errores controlados — sin stack traces ni rutas internas expuestas
+- [ ] Auth real con JWT — pendiente

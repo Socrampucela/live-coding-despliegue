@@ -137,11 +137,4 @@ http://localhost:8080/mi-proyecto/frontend/index.html
 
 ---
 
-## 🛑 Checklist de supervivencia
 
-- [x] Validación en backend — datos vacíos o inválidos son rechazados
-- [x] Rutas protegidas — no accesibles sin `x-user-id`
-- [x] Autorización — cada usuario solo accede a sus recursos
-- [x] Sin campos sensibles en respuestas — el hash de la contraseña nunca se devuelve
-- [x] Errores controlados — sin stack traces ni rutas internas expuestas
-- [ ] Auth real con JWT — pendiente

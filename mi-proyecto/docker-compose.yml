@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  api:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend/data:/app/data
+    environment:
+      - NODE_ENV=development
+
+  web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - api

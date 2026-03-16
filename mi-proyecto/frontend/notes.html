@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Notes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container wide">
+    <div class="topbar">
+      <h1>📝 My Notes</h1>
+      <button onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Create Note -->
+    <div class="card">
+      <h2>New Note</h2>
+      <input type="text" id="noteTitle" placeholder="Title" maxlength="100" />
+      <textarea id="noteContent" placeholder="Content..." maxlength="5000"></textarea>
+      <button onclick="createNote()">Save Note</button>
+      <p id="noteMsg" class="msg"></p>
+    </div>
+
+    <!-- Notes List -->
+    <div id="notesList"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

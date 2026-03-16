@@ -1,1 +1,23 @@
-{ "users": [], "notes": [] }
+{
+  "users": [
+    {
+      "id": "58842206-09cc-4c4d-bd0d-b45b2706a510",
+      "email": "abc@a",
+      "password": "$2a$10$ezSHnsQPnhftIMAKI9/kUuYYiOPI7eaGxl/.SCfr4wJG0dZvOBwHu",
+      "created_at": "2026-03-16T17:00:03.858Z"
+    },
+    {
+      "id": "6326ae06-63a5-4446-b854-ee35c1b97ede",
+      "email": "abc@ab",
+      "password": "$2a$10$Xbwq7M9eV852i6RkfpQh5uRTsKPfy1FytxhhzDXAxRcVn58.GyFH6",
+      "created_at": "2026-03-16T17:00:36.489Z"
+    },
+    {
+      "id": "ee6e927b-1e98-46ab-9c13-1c61e5b29e09",
+      "email": "abc@abc",
+      "password": "$2a$10$rmnoMKFYZ.TSoAStdSRjVunJ7poewMnD6h9AK7g0JExtObKIm9NN.",
+      "created_at": "2026-03-16T17:01:56.226Z"
+    }
+  ],
+  "notes": []
+}

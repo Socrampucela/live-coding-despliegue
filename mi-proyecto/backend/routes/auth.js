@@ -4,12 +4,20 @@ const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
 const { readDB, writeDB } = require("../utils/db");
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
 router.post("/register", async (req, res) => {
   const { email, password, confirmPassword } = req.body;
+
   if (!email || !password || !confirmPassword)
     return res.status(400).json({ error: "All fields are required." });
+
+  if (!emailRegex.test(email))
+    return res.status(400).json({ error: "Invalid email format." });
+
   if (password !== confirmPassword)
     return res.status(400).json({ error: "Passwords do not match." });
+
   if (password.length < 6)
     return res.status(400).json({ error: "Password must be at least 6 characters." });
 
@@ -25,6 +33,7 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
+
   if (!email || !password)
     return res.status(400).json({ error: "All fields are required." });
 
@@ -35,7 +44,6 @@ router.post("/login", async (req, res) => {
   const valid = await bcrypt.compare(password, user.password);
   if (!valid) return res.status(401).json({ error: "Invalid credentials." });
 
-  // TODO: replace with JWT or session once auth method is decided
   res.json({ message: "Login successful.", userId: user.id });
 });
 
